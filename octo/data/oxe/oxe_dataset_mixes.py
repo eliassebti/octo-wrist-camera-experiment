@@ -166,10 +166,41 @@ OXE_FULL_MIX = [
     ("gnm_dataset", 1.0),
 ]
 
+
+ROBOCASA_ATOMIC_STATIC_TASKS =[
+    ('close_double_door', 1.0),
+    ('close_drawer', 1.0),
+    ('close_single_door', 1.0),
+    ('coffee_press_button', 1.0),
+    ('coffee_serve_mug', 1.0),
+    ('coffee_setup_mug', 1.0),
+    ('open_double_door', 1.0),
+    ('open_drawer', 1.0),
+    ('open_single_door', 1.0),
+    ('pn_p_cab_to_counter', 1.0),
+    ('pn_p_counter_to_cab', 1.0),
+    ('pn_p_counter_to_microwave', 1.0),
+    ('pn_p_counter_to_sink', 1.0),
+    ('pn_p_counter_to_stove', 1.0),
+    ('pn_p_microwave_to_counter', 1.0),
+    ('pn_p_sink_to_counter', 1.0),
+    ('pn_p_stove_to_counter', 1.0),
+    ('turn_off_microwave', 1.0),
+    ('turn_off_sink_faucet', 1.0),
+    ('turn_off_stove', 1.0),
+    ('turn_on_microwave', 1.0),
+    ('turn_on_sink_faucet', 1.0),
+    ('turn_on_stove', 1.0),
+    ('turn_sink_spout', 1.0),
+]
+
+
 OXE_NAMED_MIXES = {
     "bridge": BRIDGE_MIX,
     "rtx": RT_X_MIX,
     "rtx_franka": RT_X_MIX + OXE_FRANKA_MIX,
     "oxe_magic_soup": OXE_MAGIC_SOUP,
     "oxe_flex_act_soup": OXE_FLEX_ACT_SOUP,
+    "robocasa_atomic_static_tasks": ROBOCASA_ATOMIC_STATIC_TASKS
 }
+

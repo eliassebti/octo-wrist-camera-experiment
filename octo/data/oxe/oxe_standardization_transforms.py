@@ -967,6 +967,38 @@ def mujoco_manip_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]
     )
     return trajectory
 
+def robo_casa_proprio_dataset_transform(
+    trajectory: Dict[str, Any]
+) -> Dict[str, Any]:
+    # trajectory["observation"]["depth"] = trajectory["observation"].pop(
+    #     "image_with_depth"
+    # )
+
+    # make gripper action absolute action, +1 = open, 0 = close
+    gripper_action = trajectory["action"]["gripper_closedness_action"]
+    # gripper_action = (gripper_action + 1) / 2
+
+    trajectory["action"] = tf.concat(
+        (
+            trajectory["action"]["world_vector"],
+            trajectory["action"]["rotation_delta"],
+            gripper_action[:, None],
+        ),
+        axis=-1,
+    )
+    trajectory["observation"]["proprio"] = tf.concat(
+        (
+            trajectory["observation"]["robot0_base_pos"],
+            trajectory["observation"]["robot0_eef_pos"],
+            trajectory["observation"]["gripper"][:, None],
+        ),
+        axis=-1,
+    )
+    
+    # trajectory["language_instruction"] = trajectory["language_instruction"]
+    return trajectory
+
+
 
 OXE_STANDARDIZATION_TRANSFORMS = {
     "bridge_dataset": bridge_dataset_transform,
@@ -1027,4 +1059,30 @@ OXE_STANDARDIZATION_TRANSFORMS = {
     "roboset": roboset_dataset_transform,
     "rh20t": rh20t_dataset_transform,
     "mujoco_manip": mujoco_manip_dataset_transform,
+    
+    'close_double_door': robo_casa_proprio_dataset_transform,
+    'close_drawer': robo_casa_proprio_dataset_transform,
+    'close_single_door': robo_casa_proprio_dataset_transform,
+    'coffee_press_button': robo_casa_proprio_dataset_transform,
+    'coffee_serve_mug': robo_casa_proprio_dataset_transform,
+    'coffee_setup_mug': robo_casa_proprio_dataset_transform,
+    'open_double_door': robo_casa_proprio_dataset_transform,
+    'open_drawer': robo_casa_proprio_dataset_transform,
+    'open_single_door': robo_casa_proprio_dataset_transform,
+    'pn_p_cab_to_counter': robo_casa_proprio_dataset_transform,
+    'pn_p_counter_to_cab': robo_casa_proprio_dataset_transform,
+    'pn_p_counter_to_microwave': robo_casa_proprio_dataset_transform,
+    'pn_p_counter_to_sink': robo_casa_proprio_dataset_transform,
+    'pn_p_counter_to_stove': robo_casa_proprio_dataset_transform,
+    'pn_p_microwave_to_counter': robo_casa_proprio_dataset_transform,
+    'pn_p_sink_to_counter': robo_casa_proprio_dataset_transform,
+    'pn_p_stove_to_counter': robo_casa_proprio_dataset_transform,
+    'turn_off_microwave': robo_casa_proprio_dataset_transform,
+    'turn_off_sink_faucet': robo_casa_proprio_dataset_transform,
+    'turn_off_stove': robo_casa_proprio_dataset_transform,
+    'turn_on_microwave': robo_casa_proprio_dataset_transform,
+    'turn_on_sink_faucet': robo_casa_proprio_dataset_transform,
+    'turn_on_stove': robo_casa_proprio_dataset_transform,
+    'turn_sink_spout': robo_casa_proprio_dataset_transform
+
 }

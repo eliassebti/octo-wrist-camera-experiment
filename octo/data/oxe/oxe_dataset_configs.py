@@ -513,4 +513,247 @@ OXE_DATASET_CONFIGS = {
         "proprio_encoding": ProprioEncoding.POS_EULER,
         "action_encoding": ActionEncoding.EEF_POS,
     },
+    
+    'close_double_door': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'close_drawer': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'close_single_door': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'coffee_press_button': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'coffee_serve_mug': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'coffee_setup_mug': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'open_double_door': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'open_drawer': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'open_single_door': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'pn_p_cab_to_counter': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'pn_p_counter_to_cab': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'pn_p_counter_to_microwave': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'pn_p_counter_to_sink': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'pn_p_counter_to_stove': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'pn_p_microwave_to_counter': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'pn_p_sink_to_counter': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'pn_p_stove_to_counter': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'turn_off_microwave': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'turn_off_sink_faucet': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'turn_off_stove': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'turn_on_microwave': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'turn_on_sink_faucet': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'turn_on_stove': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+    'turn_sink_spout': {
+        "image_obs_keys": {
+            "primary": "robot0_agentview_left_image",
+            "secondary": "robot0_agentview_right_image",
+            "wrist": "robot0_eye_in_hand_image",
+        },
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_QUAT,
+        "action_encoding": ActionEncoding.EEF_POS,
+    },
+
+    
 }
