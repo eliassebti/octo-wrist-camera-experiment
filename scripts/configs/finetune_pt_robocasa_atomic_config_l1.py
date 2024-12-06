@@ -160,17 +160,47 @@ def get_config(config_string="full,multimodal"):
     config["traj_transform_kwargs"] = traj_transform_kwargs
     config["frame_transform_kwargs"] = frame_transform_kwargs
     
+    config["config_delete_keys"] = {
+        # Remove old head entirely
+        "model": {
+            "heads": {
+                "action": "..."
+            }
+        }
+    }
+    
     config["update_config"] = {
         "model": {
-            # Cgange action horizon
+            # Use L1 head istead of diffusion
             "heads": {
                 "action": {
+                    "module": "octo.model.components.action_heads_pt", 
+                    "name": "L1ActionHeadPt", 
+                    "args": [], 
                     "kwargs": {
-                        "action_horizon": traj_transform_kwargs['action_horizon'], 
+                        "input_dim": 384, 
+                        "action_horizon": 4, 
+                        "action_dim": 7, 
+                        "readout_key": "readout_action"
                     }
                 }
             },
             
+            # Add tokenizer for proprio
+            "observation_tokenizers": {
+                "proprio": {
+                    "module": "octo.model.components.tokenizers_pt", 
+                    "name": "LowdimObsTokenizerPt",
+                    "args": [],
+                    "kwargs": {
+                        "n_bins": 256, 
+                        "bin_type": "normal", 
+                        "low": -2.0, 
+                        "high": 2.0,
+                        "obs_keys": ("proprio", )
+                    }
+                }
+            }
         }
     }
     return ConfigDict(config)
