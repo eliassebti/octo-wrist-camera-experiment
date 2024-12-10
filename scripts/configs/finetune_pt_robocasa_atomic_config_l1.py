@@ -171,6 +171,14 @@ def get_config(config_string="full,multimodal"):
     
     config["update_config"] = {
         "model": {
+            "num_tokens_dict" : {
+                'primary': 256,
+                'secondary': 256,
+                'wrist': 64,
+                'language': 16,
+                'action': 1
+            },
+            
             # Use L1 head istead of diffusion
             "heads": {
                 "action": {
@@ -199,7 +207,24 @@ def get_config(config_string="full,multimodal"):
                         "high": 2.0,
                         "obs_keys": ("proprio", )
                     }
+                },
+                "observation_tokenizers": {
+                "secondary": {
+                    "args": [], 
+                    "kwargs": {
+                        "encoder": {
+                            "args": [], 
+                            "kwargs": {},
+                            "module": "octo.model.components.vit_encoders_pt", 
+                            "name": "SmallStem16Pt"
+                        }, 
+                        "obs_stack_keys": ["image_secondary"], 
+                        "task_stack_keys": ["image_secondary"]
+                    }, 
+                    "module": "octo.model.components.tokenizers_pt", 
+                    "name": "ImageTokenizerPt"    
                 }
+            }
             }
         }
     }

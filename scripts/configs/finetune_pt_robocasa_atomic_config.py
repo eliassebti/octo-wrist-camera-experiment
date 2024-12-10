@@ -51,7 +51,7 @@ def get_config(config_string="full,multimodal"):
     config = dict(
         pretrained_path=placeholder(str),
         pretrained_step=placeholder(int),
-        batch_size=1024,
+        batch_size=512,
         shuffle_buffer_size=10000,
         num_steps=max_steps,
         log_interval=10,
@@ -162,6 +162,19 @@ def get_config(config_string="full,multimodal"):
     
     config["update_config"] = {
         "model": {
+            
+            # Specify number of input tokens for secondary observation
+            "num_tokens_dict" : {
+                'primary': 256,
+                'secondary': 256,
+                'wrist': 64,
+                'language': 16,
+                'action': 1
+            },
+            
+            # Do not load weights to action head
+            # "initialize_heads": False,
+            
             # Cgange action horizon
             "heads": {
                 "action": {
@@ -170,7 +183,26 @@ def get_config(config_string="full,multimodal"):
                     }
                 }
             },
-            
+            "observation_tokenizers": {
+                "secondary": {
+                    "args": [], 
+                    "kwargs": {
+                        "encoder": {
+                            "args": [], 
+                            "kwargs": {},
+                            "module": "octo.model.components.vit_encoders_pt", 
+                            "name": "SmallStem16Pt"
+                        }, 
+                        "obs_stack_keys": ["image_secondary"], 
+                        "task_stack_keys": ["image_secondary"]
+                    }, 
+                    "module": "octo.model.components.tokenizers_pt", 
+                    "name": "ImageTokenizerPt"    
+                }
+            }
         }
     }
+    
+    
+    
     return ConfigDict(config)
