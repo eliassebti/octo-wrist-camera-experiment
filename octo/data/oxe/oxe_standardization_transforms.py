@@ -999,6 +999,21 @@ def robo_casa_proprio_dataset_transform(
     return trajectory
 
 
+def libero_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
+    # gripper action is in -1 (open)...1 (close) --> clip to 0...1, flip --> +1 = open, 0 = close
+    gripper_action = trajectory["action"][:, -1:]
+    gripper_action = invert_gripper_actions(tf.clip_by_value(gripper_action, 0, 1))
+
+    trajectory["action"] = tf.concat(
+        [
+            trajectory["action"][:, :6],
+            gripper_action,
+        ],
+        axis=1,
+    )
+    trajectory["observation"]["EEF_state"] = trajectory["observation"]["state"][:, :6]
+    trajectory["observation"]["gripper_state"] = trajectory["observation"]["state"][:, -2:]  # 2D gripper state
+    return trajectory
 
 OXE_STANDARDIZATION_TRANSFORMS = {
     "bridge_dataset": bridge_dataset_transform,
@@ -1083,6 +1098,9 @@ OXE_STANDARDIZATION_TRANSFORMS = {
     'turn_on_microwave': robo_casa_proprio_dataset_transform,
     'turn_on_sink_faucet': robo_casa_proprio_dataset_transform,
     'turn_on_stove': robo_casa_proprio_dataset_transform,
-    'turn_sink_spout': robo_casa_proprio_dataset_transform
-
+    'turn_sink_spout': robo_casa_proprio_dataset_transform,
+    'libero_spatial_no_noops': libero_dataset_transform,
+    'libero_object_no_noops': libero_dataset_transform,
+    'libero_goal_no_noops': libero_dataset_transform,
+    'libero_10_no_noops': libero_dataset_transform,
 }
