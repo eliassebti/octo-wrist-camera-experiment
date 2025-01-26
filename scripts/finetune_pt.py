@@ -103,7 +103,8 @@ def main(_):
             Data dir: {FLAGS.config.dataset_kwargs.data_dir}
             Task Modality: {FLAGS.config.modality}
             Finetuning Mode: {FLAGS.config.finetuning_mode}
-
+            Split: {FLAGS.config.to_dict().get('split', None)}
+            
             # Devices: {num_devices}
             Batch size: {FLAGS.config.batch_size} ({FLAGS.config.batch_size // num_devices } per device)
             # Steps: {FLAGS.config.num_steps}
@@ -187,6 +188,7 @@ def main(_):
         traj_transform_kwargs=FLAGS.config.traj_transform_kwargs,
         frame_transform_kwargs=FLAGS.config.frame_transform_kwargs,
         train=True,
+        split=FLAGS.config.to_dict().get('split', None),
     )
     
     dataset_iter = dataset.repeat().unbatch().shuffle(FLAGS.config.shuffle_buffer_size)

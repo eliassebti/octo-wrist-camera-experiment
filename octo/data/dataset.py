@@ -241,6 +241,7 @@ def make_dataset_from_rlds(
     data_dir: str,
     *,
     train: bool,
+    split: str = None,
     standardize_fn: Optional[ModuleSpec] = None,
     shuffle: bool = True,
     image_obs_keys: Mapping[str, Optional[str]] = {},
@@ -421,10 +422,11 @@ def make_dataset_from_rlds(
         dataset_statistics["action"]["mask"] = np.array(action_normalization_mask)
 
     # construct the dataset
-    if "val" not in builder.info.splits:
-        split = "train[:95%]" if train else "train[95%:]"
-    else:
-        split = "train" if train else "val"
+    if split is None:
+        if "val" not in builder.info.splits:
+            split = "train[:95%]" if train else "train[95%:]"
+        else:
+            split = "train" if train else "val"
 
     dataset = dl.DLataset.from_rlds(
         builder, split=split, shuffle=shuffle, num_parallel_reads=num_parallel_reads
@@ -459,6 +461,7 @@ def make_single_dataset(
     dataset_kwargs: dict,
     *,
     train: bool,
+    split: str = None,
     traj_transform_kwargs: dict = {},
     frame_transform_kwargs: dict = {},
 ) -> dl.DLataset:
@@ -473,6 +476,7 @@ def make_single_dataset(
     dataset, dataset_statistics = make_dataset_from_rlds(
         **dataset_kwargs,
         train=train,
+        split=split,
     )
     dataset = apply_trajectory_transforms(dataset, **traj_transform_kwargs, train=train)
     dataset = apply_frame_transforms(dataset, **frame_transform_kwargs, train=train)
