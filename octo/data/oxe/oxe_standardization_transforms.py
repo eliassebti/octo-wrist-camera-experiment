@@ -1015,6 +1015,24 @@ def libero_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
     trajectory["observation"]["gripper_state"] = trajectory["observation"]["state"][:, -2:]  # 2D gripper state
     return trajectory
 
+def move_from_board_to_board_static_env_builder_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
+    # gripper action is in -1 (open)...1 (close) --> clip to 0...1, flip --> +1 = open, 0 = close
+    gripper_action = trajectory["action"]["action"][:, 7:8]
+    gripper_action = invert_gripper_actions(tf.clip_by_value(gripper_action, 0, 1))
+
+    trajectory["action"] = tf.concat(
+        [
+            trajectory["action"]["action"][:, :7],
+            gripper_action,
+            trajectory["action"]["action"][:, 8:],
+        ],  
+        axis=1,
+    )
+    
+    # trajectory["observation"]["EEF_state"] = trajectory["observation"]["state"][:, :7]
+    # trajectory["observation"]["gripper_state"] = trajectory["observation"]["state"][:, -2:]  # 2D gripper state
+    return trajectory
+
 OXE_STANDARDIZATION_TRANSFORMS = {
     "bridge_dataset": bridge_dataset_transform,
     "fractal20220817_data": rt1_dataset_transform,
@@ -1103,4 +1121,5 @@ OXE_STANDARDIZATION_TRANSFORMS = {
     'libero_object_no_noops': libero_dataset_transform,
     'libero_goal_no_noops': libero_dataset_transform,
     'libero_10_no_noops': libero_dataset_transform,
+    'move_from_board_to_board_static_env_builder_dataset': move_from_board_to_board_static_env_builder_dataset_transform,
 }
