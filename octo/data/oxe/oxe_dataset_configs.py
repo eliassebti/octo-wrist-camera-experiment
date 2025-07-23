@@ -36,6 +36,7 @@ class ActionEncoding(IntEnum):
     JOINT_POS_BIMANUAL_NAV = (
         5  # 2 x [6 x joint pos + gripper] + linear base vel + angular base vel
     )
+    FETCH_JOINT_POS_BODY_NAV = 6 # 7 x joint pos + gripper + 3 body joints + linear base vel + angular base vel
 
 
 OXE_DATASET_CONFIGS = {
@@ -779,5 +780,29 @@ OXE_DATASET_CONFIGS = {
         "action_encoding": ActionEncoding.EEF_POS,
     },
 
+    'pick_to_cart_one_prod_env250_builder': {
+        "image_obs_keys": {"primary": "left_base_camera_link", "secondary": "right_base_camera_link", "wrist": "fetch_hand"},
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_EULER,
+        "action_encoding": ActionEncoding.FETCH_JOINT_POS_BODY_NAV,
+    },
+    'pick_to_cart_static_one_prod_env250_builder': {
+        "image_obs_keys": {"primary": "left_base_camera_link", "secondary": "right_base_camera_link", "wrist": "fetch_hand"},
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_EULER,
+        "action_encoding": ActionEncoding.FETCH_JOINT_POS_BODY_NAV,
+    },
+    'move_from_board_to_board_static_one_prod_env250_builder': {
+        "image_obs_keys": {"primary": "left_base_camera_link", "secondary": "right_base_camera_link", "wrist": "fetch_hand"},
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_EULER,
+        "action_encoding": ActionEncoding.FETCH_JOINT_POS_BODY_NAV,
+    },
+    'nav_move_to_zone_env500_builder': {
+        "image_obs_keys": {"primary": "left_base_camera_link", "secondary": "right_base_camera_link", "wrist": "fetch_hand"},
+        "depth_obs_keys": {"primary": None, "secondary": None, "wrist": None},
+        "proprio_encoding": ProprioEncoding.POS_EULER,
+        "action_encoding": ActionEncoding.FETCH_JOINT_POS_BODY_NAV,
+    },
     
 }

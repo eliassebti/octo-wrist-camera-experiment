@@ -1017,14 +1017,15 @@ def libero_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
 
 def move_from_board_to_board_static_env_builder_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, Any]:
     # gripper action is in -1 (open)...1 (close) --> clip to 0...1, flip --> +1 = open, 0 = close
-    gripper_action = trajectory["action"]["action"][:, 7:8]
+    # gripper action is in -1 (close)...1 (open) --> clip to 0...1, flip --> +1 = close, 0 = open
+    gripper_action = trajectory["action"][:, 7:8]
     gripper_action = invert_gripper_actions(tf.clip_by_value(gripper_action, 0, 1))
 
     trajectory["action"] = tf.concat(
         [
-            trajectory["action"]["action"][:, :7],
+            trajectory["action"][:, :7],
             gripper_action,
-            trajectory["action"]["action"][:, 8:],
+            trajectory["action"][:, 8:],
         ],  
         axis=1,
     )
@@ -1121,5 +1122,10 @@ OXE_STANDARDIZATION_TRANSFORMS = {
     'libero_object_no_noops': libero_dataset_transform,
     'libero_goal_no_noops': libero_dataset_transform,
     'libero_10_no_noops': libero_dataset_transform,
+     
     'move_from_board_to_board_static_env_builder_dataset': move_from_board_to_board_static_env_builder_dataset_transform,
+    'pick_to_cart_one_prod_env250_builder': move_from_board_to_board_static_env_builder_dataset_transform,
+    'pick_to_cart_static_one_prod_env250_builder': move_from_board_to_board_static_env_builder_dataset_transform,
+    'move_from_board_to_board_static_one_prod_env250_builder': move_from_board_to_board_static_env_builder_dataset_transform,
+    'nav_move_to_zone_env500_builder': move_from_board_to_board_static_env_builder_dataset_transform
 }

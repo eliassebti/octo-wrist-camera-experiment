@@ -194,6 +194,12 @@ ROBOCASA_ATOMIC_STATIC_TASKS =[
     ('turn_sink_spout', 1.0),
 ]
 
+DSYNTH_DATASET_TASKS = {
+    ('pick_to_cart_one_prod_env250_builder', 1.0),
+    ('pick_to_cart_static_one_prod_env250_builder', 1.0),
+    ('move_from_board_to_board_static_one_prod_env250_builder', 1.0),
+    ('nav_move_to_zone_env500_builder', 1.0),
+} 
 
 OXE_NAMED_MIXES = {
     "bridge": BRIDGE_MIX,
@@ -201,6 +207,7 @@ OXE_NAMED_MIXES = {
     "rtx_franka": RT_X_MIX + OXE_FRANKA_MIX,
     "oxe_magic_soup": OXE_MAGIC_SOUP,
     "oxe_flex_act_soup": OXE_FLEX_ACT_SOUP,
-    "robocasa_atomic_static_tasks": ROBOCASA_ATOMIC_STATIC_TASKS
+    "robocasa_atomic_static_tasks": ROBOCASA_ATOMIC_STATIC_TASKS,
+    "dsynth_dataset": DSYNTH_DATASET_TASKS
 }
 

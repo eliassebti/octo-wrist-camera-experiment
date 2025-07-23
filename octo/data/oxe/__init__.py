@@ -53,6 +53,11 @@ def make_oxe_dataset_kwargs(
         dataset_kwargs["action_normalization_mask"] = (
             [True] * 6 + [False] + [True] * 6 + [False] + [True] * 2
         )
+    elif dataset_kwargs["action_encoding"] is ActionEncoding.FETCH_JOINT_POS_BODY_NAV:
+        dataset_kwargs["action_normalization_mask"] = (
+            [True] * 7 + [False] + [True] * 5
+        )
+    
     else:
         raise ValueError(
             f"Cannot load {name} with unsupported action encoding {dataset_kwargs['action_encoding']}."
