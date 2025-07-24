@@ -30,6 +30,7 @@ def create_validation_dataset(
     traj_transform_kwargs: dict,
     frame_transform_kwargs: dict,
     train: bool = False,
+    val_split: Optional[str] = None
 ):
     """Creates a dataset for validation and visualization purposes.
 
@@ -52,6 +53,7 @@ def create_validation_dataset(
             "num_parallel_calls": 16,
         },
         train=train,
+        split=val_split,
     )
 
 
@@ -188,6 +190,7 @@ class ValidationCallback(Callback):
     num_val_batches: int
     modes_to_evaluate: Sequence[str] = ("text_conditioned", "image_conditioned")
     train: bool = False
+    val_split: Optional[str] = None
 
     def __post_init__(self):
         if self.text_processor is not None:
@@ -203,6 +206,7 @@ class ValidationCallback(Callback):
                 self.dataset_kwargs["traj_transform_kwargs"],
                 self.dataset_kwargs["frame_transform_kwargs"],
                 train=self.train,
+                val_split=self.val_split
             )
             val_iterator = (
                 val_dataset.unbatch()
@@ -273,6 +277,7 @@ class VisualizationCallback(Callback):
     samples_per_state: int
     modes_to_evaluate: str = ("text_conditioned", "image_conditioned")
     train: bool = False
+    val_split: Optional[str] = None
 
     def __post_init__(self):
         if self.text_processor is not None:
@@ -289,6 +294,7 @@ class VisualizationCallback(Callback):
                 self.dataset_kwargs["traj_transform_kwargs"],
                 self.dataset_kwargs["frame_transform_kwargs"],
                 train=self.train,
+                val_split=self.val_split
             )
             self.visualizers[single_dataset_kwargs["name"]] = Visualizer(
                 val_dataset, text_processor=self.text_processor, freeze_trajs=False

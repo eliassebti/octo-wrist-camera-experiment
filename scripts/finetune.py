@@ -167,6 +167,7 @@ def main(_):
         traj_transform_kwargs=FLAGS.config.traj_transform_kwargs,
         frame_transform_kwargs=FLAGS.config.frame_transform_kwargs,
         train=True,
+        split=FLAGS.config.to_dict().get('split', None),
     )
     train_data_iter = (
         dataset.repeat()
@@ -330,6 +331,7 @@ def main(_):
         val_dataset_kwargs_list=dataset_kwargs_list,
         dataset_kwargs=FLAGS.config,
         modes_to_evaluate=modes_to_evaluate,
+        val_split=FLAGS.config.to_dict().get('val_split', None),
         **FLAGS.config.val_kwargs,
     )
 
@@ -338,6 +340,7 @@ def main(_):
         val_dataset_kwargs_list=dataset_kwargs_list,
         dataset_kwargs=FLAGS.config,
         modes_to_evaluate=modes_to_evaluate,
+        val_split=FLAGS.config.to_dict().get('val_split', None),
         **FLAGS.config.viz_kwargs,
     )
 
