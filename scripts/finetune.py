@@ -12,6 +12,7 @@ import optax
 import tensorflow as tf
 import tqdm
 import wandb
+import json
 
 from octo.data.dataset import make_single_dataset
 from octo.model.octo_model import OctoModel
@@ -367,6 +368,12 @@ def main(_):
 
     def wandb_log(info, step):
         wandb.log(flatten_dict(info, sep="/"), step=step)
+    
+    def save_data(data, path):
+        with open(path, 'w') as f:
+            json.dump(data, f, indent=4)
+    
+    update_info_list = []
 
     timer = Timer()
     for i in tqdm.tqdm(
@@ -389,6 +396,9 @@ def main(_):
             wandb_log(
                 {"training": update_info, "timer": timer.get_average_times()}, step=i
             )
+            update_info = {key: float(val) for key, val in update_info.items()}
+            update_info_list.append(update_info)
+            save_data(update_info_list, save_dir + '/update_info.json')
 
         if (i + 1) % FLAGS.config.eval_interval == 0:
             logging.info("Evaluating...")
