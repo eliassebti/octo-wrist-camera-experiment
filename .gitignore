@@ -166,3 +166,6 @@ wandb
 .vscode
 .idea
 datasets/debug_dataset/bridge_dataset/1.0.0/action_*
+
+# Local working notes, not meant for the shared repo
+CLAUDE.md
