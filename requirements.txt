@@ -24,6 +24,7 @@ tensorflow_text==2.15.0
 tensorflow_datasets == 4.9.2
 tensorflow-metadata == 1.14.0
 protobuf == 3.20.3
+accelerate == 0.33.0
 tensorflow_graphics == 2021.12.3
 dlimp @ git+https://github.com/kvablack/dlimp@5edaa4691567873d495633f2708982b42edf1972
 plotly >= 5.16.1
