@@ -812,6 +812,12 @@ def berkeley_fanuc_dataset_transform(trajectory: Dict[str, Any]) -> Dict[str, An
         ),
         axis=-1,
     )
+    # dataset has no raw language_instruction string (only a precomputed
+    # language_embedding), so inject an empty placeholder matching the
+    # convention used by other language-less transforms in this file
+    trajectory["language_instruction"] = tf.fill(
+        (tf.shape(trajectory["action"])[0],), ""
+    )
     return trajectory
 
 
