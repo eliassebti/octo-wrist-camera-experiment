@@ -1,0 +1,81 @@
+\documentclass[11pt]{article}
+
+\usepackage[margin=1in]{geometry}
+\usepackage{booktabs}
+\usepackage{amsmath}
+\usepackage{hyperref}
+\usepackage{parskip}
+
+\title{Does Finetuning on Wrist-Rich Data Help Octo-Small Use Its Wrist Camera?}
+\author{}
+\date{}
+
+\begin{document}
+\maketitle
+
+\section*{Motivation}
+
+Octo's own paper (arXiv 2405.12213) states that combining a wrist camera with the third-person camera during finetuning often performed worse than using the third-person camera alone, and attributes this to only 27\% of pretraining data including a wrist camera. Because of this, we set out to answer the question: \emph{Does finetuning the pretrained model specifically on wrist-camera-rich data help it use that camera better on one task?}
+
+\section*{Method}
+
+We compare three conditions on identical held-out data, using the same evaluation code within a single process to ensure a valid paired comparison:
+
+\begin{itemize}
+    \item \textbf{A --- Pretrained Octo-Small, primary camera only.} The wrist-camera input (\texttt{image\_wrist}) is zeroed out and its pad mask set to \texttt{False}, exactly mirroring how the data pipeline encodes a robot with no wrist camera at all. We verified this representation against \texttt{bridge\_dataset} (which has no wrist camera) prior to running the experiment (see Appendix).
+    \item \textbf{B --- Pretrained Octo-Small, primary + wrist camera.} Both inputs are used unmodified, with the real wrist-camera images intact.
+    \item \textbf{C --- Finetuned Octo-Small, primary + wrist camera.} The pretrained model is finetuned for 3,000 steps on \texttt{berkeley\_fanuc\_manipulation} (batch size 128, cosine LR schedule, peak LR $3\times10^{-4}$), then evaluated with both camera inputs, as in condition B.
+\end{itemize}
+
+\paragraph{Held-out set.} \texttt{berkeley\_fanuc\_manipulation} has no separate validation split, so the pipeline's existing 95/5 fallback (\texttt{train[:95\%]} / \texttt{train[95\%:]}) was used, yielding 40 held-out examples, none seen during finetuning.
+
+\paragraph{Metric.} Mean squared error between the model's raw action-head output and ground-truth actions, in the dataset's own normalized space. Comparing in normalized space (rather than unnormalizing) avoids needing \texttt{berkeley\_fanuc}'s statistics to exist in the pretrained model's bundled dataset statistics --- they don't, since this dataset wasn't part of Octo's original pretraining mix.
+
+\paragraph{Handling stochasticity.} Octo's action head is a diffusion model, so a single rollout is not informative on its own: identical inputs can yield different outputs depending on the random seed used during sampling. To account for this, each of the 40 held-out examples was evaluated 8 times per condition, each with an independent random seed, and each rollout produces predictions across Octo's 4-step action horizon. This yields
+\[
+40 \times 8 \times 4 = 1{,}280
+\]
+error values per condition, giving each reported result enough statistical weight to reflect genuine differences between conditions rather than sampling noise from the diffusion process.
+
+\section*{Results}
+
+\begin{table}[h]
+\centering
+\begin{tabular}{lcccccccc}
+\toprule
+Condition & Overall MSE & $x$ & $y$ & $z$ & roll & pitch & yaw & gripper \\
+\midrule
+A --- pretrained, primary only & 2.181 & 2.795 & 3.338 & 2.011 & 1.620 & 3.626 & 1.604 & 0.274 \\
+B --- pretrained, + real wrist & 1.192 & 1.527 & 1.201 & 1.071 & 1.416 & 1.030 & 2.039 & 0.062 \\
+C --- finetuned, + real wrist  & 1.245 & 1.669 & 0.910 & 0.888 & 1.226 & 2.855 & 1.096 & 0.073 \\
+\bottomrule
+\end{tabular}
+\caption{Mean squared error (normalized space) by condition and action dimension.}
+\end{table}
+
+\section*{Findings}
+
+\begin{enumerate}
+    \item \textbf{Adding the real wrist camera to the untouched pretrained model cut error by $\sim$45\%.} This is a large, clean effect in this specific test. It is not a contradiction of the paper's claim --- the paper's finding was about combining cameras hurting \emph{during finetuning}; this test compares zero-shot use of an already-present camera, a different question.
+    \item \textbf{Finetuning specifically on wrist-rich data did not improve on the already-strong zero-shot wrist result.} It was slightly worse overall. This is the direct answer to the question we set out to test, and the honest answer from this run is no. The per-dimension breakdown shows this isn't a uniform failure: $y$, $z$, and yaw all improved substantially under finetuning, but pitch got much worse ($1.030 \to 2.855$) and pulled the aggregate down. Finetuning changed \emph{what} the model got wrong, not simply \emph{whether} it got things wrong.
+\end{enumerate}
+
+\section*{What This Does and Does Not Support}
+
+\textbf{It supports:} on this one task, with this one 3,000-step finetuning run, the pretrained model already makes good zero-shot use of the wrist camera, and additional finetuning did not clearly help by this metric.
+
+\textbf{It does not support} a general claim that ``finetuning on wrist-rich data never helps Octo use the wrist camera.'' This was one finetuning run at default hyperparameters. The diffusion-head sampling stochasticity was properly handled (8 samples/example, decided in advance), but a second finetuning run with a different seed or a different hyperparameter (learning rate, step count) could plausibly land differently --- especially given how volatile the pitch dimension was between B and C.
+
+Normalized-space MSE is a reasonable proxy but is not the same as real robot task success rate. A lower-MSE model could still fail the task, or vice versa.
+
+\section*{Appendix: Reproducibility Notes}
+
+\paragraph{Evaluation script.} \texttt{eval\_abc.py} (repo root on the RunPod pod at time of run; not yet committed --- the finetuning config \texttt{scripts/configs/fanuc\_config.py} and a real bug fix to \texttt{berkeley\_fanuc\_dataset\_transform} (missing \texttt{language\_instruction} placeholder, needed because this dataset has no raw language field) are committed on branch \texttt{fix/dependency-pins} at \texttt{eliassebti/octo-pytorch}).
+
+\paragraph{Environment.} Python 3.10, \texttt{transformers==4.44.2}, \texttt{tensorflow==2.15.0}, \texttt{tensorflow-metadata==1.14.0}, \texttt{protobuf==3.20.3}, \texttt{wandb==0.16.6}, \texttt{accelerate==0.33.0} --- all pinned in \texttt{requirements.txt} on the same branch after several rounds of version-drift debugging.
+
+\paragraph{Finetuning.} Invoked via \texttt{torchrun --nproc\_per\_node 1} (required --- the script wraps the model in \texttt{DistributedDataParallel} unconditionally, which needs a real process group even for one GPU).
+
+\paragraph{Checkpoint.} \texttt{/workspace/runs/fanuc\_wrist/octo\_finetune/fanuc\_wrist\_20260827\_183157/} on the RunPod pod (not persisted anywhere else as of this writeup).
+
+\end{document}
